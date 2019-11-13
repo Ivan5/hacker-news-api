@@ -2,13 +2,20 @@ import React, { useState, useEffect } from "react";
 import { getStory } from "../services/hnApi";
 
 const Story = ({ storyId }) => {
-  useEffect(() => {}, []);
+  const [story, setStory] = useState({});
+  useEffect(() => {
+    getStory(storyId).then(data => data && data.url && setStory(data));
+  }, []);
 
-  return (
-    <div>
-      <p>I'm a story {storyId}</p>
-    </div>
-  );
+  return story && story.url ? (
+    <>
+      <a href={story.url}>
+        <p>{story.title}</p>
+      </a>
+      By: <p>{story.by}</p>
+      Posted: <p>{story.time}</p>
+    </>
+  ) : null;
 };
 
 export default Story;
